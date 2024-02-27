@@ -9,7 +9,7 @@ import { SignIn } from "@/components/SignIn";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 
-export default function Home(session: Session | null | undefined) {
+export default function Home(session:any) {
   const { setVisible } = useWalletModal();
   const { publicKey, disconnect } = useWallet();
   const router = useRouter()
