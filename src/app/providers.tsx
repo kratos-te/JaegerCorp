@@ -5,20 +5,23 @@ import { SolanaWalletProvider } from "@/contexts/SolanaWalletProvider";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ModalProvider } from "@/contexts/ModalContext";
 import RaidModal from "@/components/RaidModal";
+import { ProfileProvider } from "@/contexts/ProfileContext";
 
 const queryClient = new QueryClient();
 
-
 export default function Providers({ children }: { children: ReactNode }) {
+
   return (
+    
     <SolanaWalletProvider>
       <QueryClientProvider client={queryClient}>
-        <PageProvider>
-          <ModalProvider>
-            {children}
-            <RaidModal />
-          </ModalProvider>
-        </PageProvider>
+
+          <PageProvider>
+            <ModalProvider>
+              {children}
+              <RaidModal />
+            </ModalProvider>
+          </PageProvider>
       </QueryClientProvider>
     </SolanaWalletProvider>
   );
