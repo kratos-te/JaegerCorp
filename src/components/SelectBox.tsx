@@ -1,17 +1,26 @@
 "use client"
 import { FC, useState } from "react";
 import { SelectIcon, UnselectIcon } from "./SvgIcon";
+import { SELECT_LIST } from "@/config";
 
 interface SelectType {
     title: string;
     select: boolean;
+    changeCheckBox : any;
 }
 
-const SelectBox:FC<SelectType> = ({title, select}) => {
+const SelectBox:FC<SelectType> = ({title, select, changeCheckBox}) => {
 
     const [isSelect, setIsSelect] = useState<boolean>(select)
 
     const handleSelect = () => {
+        let index = 0;
+        for(let i = 0; i < SELECT_LIST.length;i++) {
+            if(SELECT_LIST[i].title == title) {
+                index = i; break;
+            }
+        }
+        changeCheckBox(index);
         setIsSelect(!isSelect)
     }
     return (

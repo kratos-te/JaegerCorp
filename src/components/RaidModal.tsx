@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @next/next/no-img-element */
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import {
   CloseIcon,
   CommectIcon,
@@ -13,10 +13,24 @@ import {
 } from "./SvgIcon";
 import { useModal } from "@/contexts/ModalContext";
 import ClickAwayComponent from "./ClickAwayComponent";
+import { getUserInfo } from "@/action/user";
+import { UserType } from "@/type";
+import Link from "next/link";
 
 const RaidModal: FC = () => {
-  const { isOpenedRaid, closeRaidModal } = useModal();
+  const { isOpenedRaid, closeRaidModal, raid } = useModal();
+  const [user, setUser] = useState<UserType>();
 
+  useEffect(() => {
+    const loadUser = async () => {
+      if (raid?.creater) {
+        const res = await getUserInfo(raid?.creater);
+        setUser(res);
+        console.log("user", res);
+      }
+    };
+    loadUser();
+  }, [raid?.creater]);
   if (!isOpenedRaid) return null;
 
   return (
@@ -29,7 +43,9 @@ const RaidModal: FC = () => {
           onClickAway={closeRaidModal}
         >
           <div className="flex justify-between items-center">
-            <p className="text-[24px] font-semibold text-white max-md:text-[16px]">Raids View</p>
+            <p className="text-[24px] font-semibold text-white max-md:text-[16px]">
+              Raids View
+            </p>
             <div className=" cursor-pointer" onClick={closeRaidModal}>
               <CloseIcon />
             </div>
@@ -37,23 +53,31 @@ const RaidModal: FC = () => {
           <div className="flex flex-col gap-[24px] p-[16px] justify-center rounded-[16px] bg-[#171F2A] border-[1px] border-[#30373F]">
             <div className="flex gap-[14px]">
               <div className="w-[60px] max-xl:w-[30px]">
-                <img
-                  src={"/avatar/pfp.png"}
-                  className="rounded-full"
-                  alt="personal avatar"
-                />
+                {user?.twitterImageURI ? (
+                  <img
+                    src={user?.twitterImageURI}
+                    className="rounded-full"
+                    alt="personal avatar"
+                  />
+                ) : (
+                  <img
+                    src={"/avatar/pfp.png"}
+                    className="rounded-full"
+                    alt="personal avatar"
+                  />
+                )}
               </div>
               <div className="flex flex-col gap-[16px] w-[calc(100%-100px)] max-xl:w-[calc(100%-70px)]">
                 <div className="flex gap-[5px]">
-                  <p className="text-[20px] font-bold text-white max-xl:text-[14px]">
-                    Bobur
-                  </p>
-                  <p className="text-[18px] font-normal text-white/60 max-xl:text-[12px]">
-                    @bobur_mavlonov · Apr 1
-                  </p>
+                  {user?.twitterName ?<p className="text-[18px] font-normal text-white/60 max-xl:text-[12px]">
+                   {user?.twitterName}
+                  </p>  : <p className="text-[18px] font-normal text-white/60 max-xl:text-[12px]">
+                    {user && `${user?.wallet?.slice(0, 6)}...${user?.wallet?.slice(-4)}`}
+                  </p>}
+                 
                 </div>
                 <p className="text-[18px] font-normal text-white max-xl:text-[12px]">
-                  A bo'pti maskamasman
+                  {raid?.name}
                 </p>
                 <div className="flex flex-col gap-[12px]">
                   <img
@@ -69,22 +93,16 @@ const RaidModal: FC = () => {
                   </div>
                   <div className="flex gap-[24px] text-[16px] max-xld:text-[12px]">
                     <div className="flex items-center gap-[10px] max-xld:gap-[4px]">
-                      <LikeIcon className="max-xld:w-[16px]"/>
-                      <p className=" font-normal text-[#536471]">
-                        399
-                      </p>
+                      <LikeIcon className="max-xld:w-[16px]" />
+                      <p className=" font-normal text-[#536471]">399</p>
                     </div>
                     <div className="flex items-center gap-[10px] max-xld:gap-[4px]">
-                      <CommectIcon className="max-xld:w-[16px]"/>
-                      <p className=" font-normal text-[#536471]">
-                        Reply
-                      </p>
+                      <CommectIcon className="max-xld:w-[16px]" />
+                      <p className=" font-normal text-[#536471]">Reply</p>
                     </div>
                     <div className="flex items-center gap-[10px] max-xld:gap-[4px]">
-                      <ShareIcon className="max-xld:w-[16px]"/>
-                      <p className=" font-normal text-[#536471]">
-                        Share
-                      </p>
+                      <ShareIcon className="max-xld:w-[16px]" />
+                      <p className=" font-normal text-[#536471]">Share</p>
                     </div>
                   </div>
                 </div>
@@ -95,11 +113,11 @@ const RaidModal: FC = () => {
               </div>
             </div>
 
-            <div className="flex w-full justify-center py-[10px] rounded-[10px] border-[2px] border-[#FFB547] cursor-pointer">
+            <Link href={`${raid?.raidURL}`} target="_blank" className="flex w-full justify-center py-[10px] rounded-[10px] border-[2px] border-[#FFB547] cursor-pointer">
               <p className="text-[14px] font-semibold text-[#FFB547]">
                 Read more on X
               </p>
-            </div>
+            </Link>
           </div>
           <div className="flex p-[24px] bg-black rounded-[12px] max-xld:hidden">
             <div className="flex items-center justify-start w-1/2">

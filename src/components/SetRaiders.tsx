@@ -23,7 +23,7 @@ const SetRaiders: FC<RaidersType> = ({title, raiders}) => {
         <div className="cursor-pointer" onClick={handleMinus}>
         <MinusIcon />
         </div>
-        <div className="flex text-[16px] font-medium text-white">{raider}</div>
+        <div id="raider-number" className="flex text-[16px] font-medium text-white">{raider}</div>
         <div className="cursor-pointer" onClick={handlePlus}>
         <PlusIcon />
         </div>
