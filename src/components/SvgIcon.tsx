@@ -875,3 +875,56 @@ export const UnselectIcon: FC = () => {
     </svg>
   );
 };
+
+export const NextIcon = () => {
+  return (
+    <svg
+      width="59"
+      height="59"
+      viewBox="0 0 59 59"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="29.1421"
+        width="41.2132"
+        height="41.2132"
+        rx="20.6066"
+        transform="rotate(45 29.1421 0)"
+        fill="white"
+      />
+      <path
+        d="M23.6421 19.6422L34.6421 29.1422L23.6421 38.6421"
+        stroke="#047EFF"
+        strokeWidth="5"
+      />
+    </svg>
+  );
+};
+
+export const PrevIcon = () => {
+  return (
+    <svg
+      width="59"
+      height="59"
+      viewBox="0 0 59 59"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="29.1421"
+        y="58.2842"
+        width="41.2132"
+        height="41.2132"
+        rx="20.6066"
+        transform="rotate(-135 29.1421 58.2842)"
+        fill="white"
+      />
+      <path
+        d="M34.6421 38.6421L23.6421 29.1421L34.6421 19.6421"
+        stroke="#047EFF"
+        strokeWidth="5"
+      />
+    </svg>
+  );
+};

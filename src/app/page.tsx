@@ -8,13 +8,15 @@ import { AvatarIcon, TwitterIcon, WalletIcon } from "@/components/SvgIcon";
 import { signIn, useSession, signOut, SessionProvider } from "next-auth/react";
 import { SignIn } from "@/components/SignIn";
 
+
 export default function Home(session: any) {
   // const {data : session} = useSession()
   const { setVisible } = useWalletModal();
   const { publicKey, disconnect } = useWallet();
   const router = useRouter();
 
-  const handleToHome = () => {
+  const handleToHome = async () => {
+    
     router.push("/raids");
   };
   return (

@@ -6,36 +6,68 @@ import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { AvatarIcon, TwitterIcon, WalletIcon } from "@/components/SvgIcon";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { errorAlert, successAlert, warningAlert } from "./ToastGroup";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ProfileContext } from "@/contexts/ProfileContext";
+import { sign } from "@/action/signin";
+const { API_URL } = process.env;
 
 export const SignIn = () => {
   const { setVisible } = useWalletModal();
+  const [name, setName] = useState<string>("");
   const { publicKey, disconnect } = useWallet();
   const router = useRouter();
   const { data: session } = useSession();
-  console.log("user name", session?.user?.name);
-  const handleToHome = () => {
+  const handleToHome = async () => {
+    console.log("apiurl===>", API_URL);
+    const wallet = publicKey?.toString();
+    const twitterName = session?.user?.name;
+    const twitterImageURI = session?.user?.image;
+    const twitterEmail = session?.user?.email;
+    if (wallet && twitterName && twitterImageURI && twitterEmail) {
+      const res = await sign(wallet, twitterName, twitterImageURI, twitterEmail);
+      console.log("response ====>", res);
+    }
+
+    // const res = await axios.post(`http://localhost:3000/api/register/user`, {
+    //    wallet : publicKey?.toString(),
+    //    twitterName : session?.user?.name,
+    //    twitterImageURI : session?.user?.image,
+    //    twitterEmail : session?.user?.email
+    //   });
+
     router.push("/raids");
   };
 
   const connectTwitter = () => {
     signIn();
-    if (session !== null) {
-        // setName(session?.user?.name)
-        // setImage(session?.user?.image)
-        localStorage.setItem("name", session?.user?.name as string)
-        localStorage.setItem("image", session?.user?.image as string)
+    if (session?.user?.name) {
+      console.log("user name", session?.user?.name);
+
+      // setName(session?.user?.name)
+      // setImage(session?.user?.image)
+      // setName(session?.user?.name as string)
+      localStorage.setItem("name", session?.user?.name as string);
+      localStorage.setItem("image", session?.user?.image as string);
       successAlert("Connected Twitter!");
     }
   };
 
-  const connectWallet = () => {
-    if (session !== null) {
-      setVisible(true);
-    } else {
-      errorAlert("Please Sign Twitter!");
+  useEffect(() => {
+    console.log("user name", session?.user?.name);
+    const getName = localStorage.getItem("name");
+    const getImage = localStorage.getItem("image");
+    if (getName) {
+      setName(getName);
     }
+  }, []);
+
+  const connectWallet = () => {
+    // if (session !== null) {
+    //   setVisible(true);
+    // } else {
+    //   errorAlert("Please Sign Twitter!");
+    // }
+    setVisible(true);
   };
 
   return (
@@ -57,7 +89,7 @@ export const SignIn = () => {
               onClick={() => connectTwitter()}
             >
               {session?.user?.name ? (
-                `@${session?.user?.name} connected`
+                `@${name} connected`
               ) : (
                 <>
                   <TwitterIcon />

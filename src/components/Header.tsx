@@ -49,11 +49,11 @@ const Header: FC = () => {
 
   useEffect(() => {
     const getName = localStorage.getItem("name")
-    const getImage= localStorage.getItem("image")
-    if(getName) {
+    const getImage = localStorage.getItem("image")
+    if (getName) {
       setName(getName)
     }
-    if(getImage) {
+    if (getImage) {
       setImage(getImage)
     }
   }, []);
@@ -105,6 +105,13 @@ const Header: FC = () => {
                 <p className="text-[16px] font-semibold text-[#FFB547]">2500</p>
               </div>
               <div className="flex w-[200px] items-center gap-[12px] rounded-full border-[1px] border-[#23232C] bg-black p-[4px] cursor-pointer max-lg:hidden">
+                {image ? (
+                  <div className="w-[40px] h-[40px] rounded-full">
+                    <img src={image} alt="avatar" className="w-[40px] h-[40px] rounded-full"/>
+                  </div>
+                ) : (
+                  <AvatarIcon />
+                )}
                 <div className="flex flex-col gap-[]">
                   <p className="text-[16px] font-semibold text-white">
                     {name ? name : "Alan Kennedy"}
@@ -125,8 +132,8 @@ const Header: FC = () => {
                 onClick={handleShowMenu}
               >
                 {image ? (
-                  <div className="w-[24px] h-[24px ] rounded-full">
-                    <img src={image} alt="avatar" />
+                  <div className="w-[40px] h-[40px] rounded-full">
+                    <img src={image} alt="avatar" className="w-[40px] h-[40px] rounded-full" />
                   </div>
                 ) : (
                   <AvatarMobileIcon />
@@ -166,7 +173,7 @@ const Header: FC = () => {
                   <div className="flex w-[220px] items-center gap-[12px] rounded-full border-[1px] border-[#23232C] bg-black p-[4px] cursor-pointer">
                     {image ? (
                       <div className="w-[40px] h-[40px] rounded-full">
-                        <img src={image} alt="avatar" />
+                        <img src={image} alt="avatar" className="w-[40px] h-[40px] rounded-full"/>
                       </div>
                     ) : (
                       <AvatarIcon />

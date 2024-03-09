@@ -5,6 +5,7 @@ export const SOL_PRICE_API =
 
 export const SOLANA_RPC = process.env.NEXT_PUBLIC_SOLANA_RPC ?? "";
 
+export const API_URL = process.env.API_URL || "http://localhost:3000"
 export const MENU_BAR = [
   {
     title: "Raids",

@@ -1,10 +1,14 @@
 "use client";
+import { getOneRaid } from "@/action/raid";
+import { RaidType } from "@/type";
 import { createContext, useContext, ReactNode, useState } from "react";
 
 interface ModalContextType {
   openRaidModal: () => void;
   closeRaidModal: () => void;
+  setWallet: (id:string) => void
   isOpenedRaid: boolean;
+  raid: RaidType | undefined;
 }
 
 export const ModalContext = createContext<ModalContextType | undefined>(
@@ -25,9 +29,14 @@ interface ModalProviderProps {
 
 export function ModalProvider({ children }: ModalProviderProps) {
   const [isOpenedRaid, setIsOpenRaid] = useState<boolean>(false);
+  const [raid, setRaid] = useState<RaidType>()
+  const [wallet, setWallet] = useState<string>("")
+  
 
-  const openRaidModal = () => {
+  const openRaidModal = async () => {
     setIsOpenRaid(true);
+    const res = await getOneRaid(wallet)
+    setRaid(res?.data)
     document.body.classList.add("modal-open");
   };
 
@@ -38,7 +47,9 @@ export function ModalProvider({ children }: ModalProviderProps) {
   const modalContextValue: ModalContextType = {
     openRaidModal,
     closeRaidModal,
+    setWallet,
     isOpenedRaid,
+    raid,
   };
   return (
     <ModalContext.Provider value={modalContextValue}>
